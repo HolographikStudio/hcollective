@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Brand & Website Questionnaire — H’Collective</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #E8E8E4;
+    --paper: #F5F5F2;
+    --ink: #191C1B;
+    --muted: #62676A;
+    --line: #C9CBC3;
+    --beam: rgba(25, 28, 27, 0.13);
+    --light: #2F5D4A;
+    --chip-on-bg: #1C2024;
+    --chip-on-ink: #F4F4EF;
+    --focus: #2F6FD6;
+    --serif: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --sans: "Hanken Grotesk", "Helvetica Neue", Arial, system-ui, sans-serif;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #161514; --paper: #201E1C; --ink: #ECE8E2; --muted: #9DA3A6; --line: #353A3F;
+      --beam: rgba(236, 232, 226, 0.10); --light: #7FB39A;
+      --chip-on-bg: #ECE8E2; --chip-on-ink: #161514; --focus: #7FA8F0;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #161514; --paper: #201E1C; --ink: #ECE8E2; --muted: #9DA3A6; --line: #353A3F;
+    --beam: rgba(236, 232, 226, 0.10); --light: #7FB39A;
+    --chip-on-bg: #ECE8E2; --chip-on-ink: #161514; --focus: #7FA8F0;
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--sans); font-size: 16px; line-height: 1.5;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+
+  .progress { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; height: 3px; background: var(--line); }
+  .progress span { display: block; height: 100%; width: 0; background: var(--light); transition: width .25s ease; }
+
+  /* Hero: fine architectural grid fading in from the right */
+  .hero { position: relative; overflow: hidden; padding: 88px 24px 72px; }
+  .hero::before {
+    content: ""; position: absolute; inset: -40% -20%;
+    background:
+      repeating-linear-gradient(90deg, var(--beam) 0 1px, transparent 1px 64px),
+      repeating-linear-gradient(0deg, var(--beam) 0 1px, transparent 1px 64px);
+    -webkit-mask-image: linear-gradient(100deg, transparent 42%, #000 85%);
+    mask-image: linear-gradient(100deg, transparent 42%, #000 85%);
+    pointer-events: none;
+    animation: sweep 1.6s cubic-bezier(.2,.7,.2,1) both;
+  }
+  @keyframes sweep { from { transform: translateX(-30%); opacity: 0; } to { transform: none; opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .hero::before { animation: none; } html { scroll-behavior: auto; } }
+  .hero-inner { position: relative; max-width: 720px; margin: 0 auto; }
+  .from { font-size: 14px; color: var(--muted); margin: 0 0 28px; }
+  h1 {
+    font-family: var(--serif); font-weight: 400; font-size: clamp(44px, 8vw, 76px);
+    line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 28px;
+  }
+  .lead { font-family: var(--serif); font-size: 20px; line-height: 1.55; max-width: 60ch; margin: 0 0 16px; }
+  .meta { color: var(--muted); font-size: 15px; max-width: 60ch; margin: 0; }
+
+  main { max-width: 768px; margin: 0 auto; padding: 0 24px 64px; }
+
+  section.part { padding: 56px 0 8px; border-top: 1px solid var(--line); }
+  .part-head { display: flex; gap: 16px; align-items: baseline; margin-bottom: 8px; }
+  .part-num { font-family: var(--serif); font-size: 18px; color: var(--muted); min-width: 28px; }
+  .part-head h2 { font-family: var(--serif); font-weight: 400; font-size: 32px; line-height: 1.15; margin: 0; letter-spacing: -0.01em; }
+  .part-note { color: var(--muted); margin: 0 0 8px; max-width: 58ch; }
+
+  .q { display: grid; grid-template-columns: 28px 1fr; column-gap: 16px; padding: 28px 0; }
+  .q + .q { border-top: 1px dashed var(--line); }
+  .q-num { font-family: var(--serif); color: var(--muted); font-size: 16px; padding-top: 3px; }
+  .q-label { font-family: var(--serif); font-size: 21px; line-height: 1.35; margin: 0 0 6px; display: block; }
+  .q-hint { color: var(--muted); font-size: 14.5px; margin: 0 0 14px; }
+  .q-body { min-width: 0; }
+
+  input[type=text], input[type=email], input[type=tel], input[type=url], textarea {
+    width: 100%; font: inherit; color: var(--ink); background: var(--paper);
+    border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px;
+    transition: border-color .15s;
+  }
+  textarea { min-height: 112px; resize: vertical; line-height: 1.5; }
+  input::placeholder, textarea::placeholder { color: var(--muted); opacity: .75; }
+  input:focus-visible, textarea:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; border-color: transparent; }
+  .stack { display: grid; gap: 10px; }
+  .pair { display: grid; grid-template-columns: 1fr 1.2fr; gap: 10px; }
+  .numbered { display: grid; grid-template-columns: 18px 1fr; gap: 10px; align-items: center; }
+  .numbered span { color: var(--muted); font-size: 14px; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { position: relative; }
+  .chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .chip span {
+    display: inline-block; padding: 8px 15px; border: 1px solid var(--line); border-radius: 999px;
+    background: var(--paper); cursor: pointer; font-size: 15px; user-select: none;
+    transition: background .12s, color .12s, border-color .12s;
+  }
+  .chip span:hover { border-color: var(--ink); }
+  .chip input:checked + span { background: var(--chip-on-bg); color: var(--chip-on-ink); border-color: var(--chip-on-bg); }
+  .chip input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .other { margin-top: 10px; }
+  .limit-note { font-size: 13.5px; color: var(--muted); margin-top: 8px; min-height: 1em; }
+
+  .matrix { display: grid; gap: 2px; }
+  .m-row { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .m-row:last-child { border-bottom: 0; }
+  .m-label { font-size: 15.5px; }
+  .m-row .chips { gap: 6px; flex-wrap: nowrap; }
+  .m-row .chip span { padding: 6px 12px; font-size: 13.5px; }
+  @media (max-width: 600px) {
+    .m-row { grid-template-columns: 1fr; gap: 6px; }
+    .m-row .chips { flex-wrap: wrap; }
+    .pair { grid-template-columns: 1fr; }
+    .q { grid-template-columns: 1fr; }
+    .q-num { padding: 0 0 4px; }
+    .part-note { margin-left: 0; }
+    .hero { padding: 64px 20px 56px; }
+    main { padding: 0 20px 48px; }
+  }
+
+  .contact { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .contact label { font-size: 14px; color: var(--muted); display: grid; gap: 6px; }
+  @media (max-width: 600px) { .contact { grid-template-columns: 1fr; } }
+
+  .send { padding: 48px 0 0; border-top: 1px solid var(--line); margin-top: 32px; }
+  .send h2 { font-family: var(--serif); font-weight: 400; font-size: 32px; margin: 0 0 8px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 28px; }
+  button {
+    font: inherit; font-weight: 500; cursor: pointer; border-radius: 999px; padding: 13px 24px;
+    border: 1px solid var(--ink); background: transparent; color: var(--ink);
+  }
+  button.primary { background: var(--ink); color: var(--bg); }
+  button:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+  button:disabled { opacity: .5; cursor: default; }
+  button.link { border: 0; padding: 13px 4px; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  .status { margin-top: 16px; font-size: 15px; min-height: 1.5em; }
+  .status.error { color: #B3412E; }
+  .fallback { display: none; margin-top: 20px; padding: 20px; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; }
+  .fallback.show { display: block; }
+  .fallback p { margin: 0 0 14px; }
+  .fallback a { color: var(--ink); }
+  .saved { font-size: 13.5px; color: var(--muted); }
+  footer { max-width: 768px; margin: 0 auto; padding: 24px 24px 56px; color: var(--muted); font-size: 14px; }
+  footer a { color: inherit; }
+</style>
+</head>
+<body>
+<div class="progress" aria-hidden="true"><span id="progressFill"></span></div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="from">Holographik for H’Collective</p>
+    <h1>Brand &amp; website<br>questionnaire</h1>
+    <p class="lead">Before we begin the strategy, naming and identity for the practice's next chapter, we'd like to understand your story, your clients and your ambitions.</p>
+    <p class="meta">Most questions take a click, and short answers are perfectly fine. Answers save in this browser as you go, so you can stop and come back. It takes about 30 minutes.</p>
+  </div>
+</header>
+
+<main>
+  <form id="qform" novalidate autocomplete="on"></form>
+
+  <section class="send" aria-labelledby="sendTitle">
+    <h2 id="sendTitle">Your details</h2>
+    <p class="meta">So we know who to follow up with.</p>
+    <div class="contact" style="margin-top:20px">
+      <label>Name<input type="text" form="qform" name="c_name" autocomplete="name"></label>
+      <label>Role<input type="text" form="qform" name="c_role" autocomplete="organization-title"></label>
+      <label>Email<input type="email" form="qform" name="c_email" autocomplete="email"></label>
+      <label>Phone (optional)<input type="tel" form="qform" name="c_phone" autocomplete="tel"></label>
+    </div>
+    <div class="actions">
+      <button type="button" class="primary" id="sendBtn">Send answers</button>
+      <button type="button" id="downloadBtn">Download a copy</button>
+      <button type="button" class="link" id="clearBtn">Clear all answers</button>
+    </div>
+    <div class="status" id="status" role="status" aria-live="polite"></div>
+    <p class="saved" id="savedNote">Answers save in this browser.</p>
+    <div class="fallback" id="fallback">
+      <p>Your answers are ready to send. Copy them and email them to <a href="mailto:hello@holographik.co">hello@holographik.co</a>, or download a copy and attach it.</p>
+      <div class="actions" style="margin-top:0">
+        <button type="button" class="primary" id="copyBtn">Copy answers</button>
+        <a id="mailLink" href="mailto:hello@holographik.co">Open email</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>Questions along the way? Write to <a href="mailto:hello@holographik.co">hello@holographik.co</a>.</footer>
+
+<script>
+  // Paste the Google Apps Script /exec URL here when hosting this page yourself
+  // (same generic doPost script as the Pinecrest form; use a new sheet for this client).
+  // Leave empty and answers are sent by email / download instead.
+  const SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzGYmqBQ7SW1QIhg7Euf7-T5MbeJ_6M1ehjdYihVGqoJfnTnHiyXqxu9SDYn2Q2ht-Z3w/exec";
+  const STORAGE_KEY = "hcollective_discovery_v1";
+
+  const PARTS = [
+    { title: "The practice today", qs: [
+      { id: "q_describe", type: "text", label: "In one or two sentences, how would you describe the practice today?" },
+      { id: "q_story", type: "textarea", label: "Since 1997 the practice has grown from early creative work into interiors and global architecture. Which milestones matter most?" },
+      { id: "q_tagline", type: "single", label: "Your current line is \"Architecture that transcends trends.\" Should it carry into the new brand?",
+        options: ["Keep it", "Keep the idea, new words", "Leave it behind", "To discuss"] },
+      { id: "q_services", type: "multi", label: "Which services should the new brand represent?", hint: "Select all that apply.", other: true,
+        options: ["Architecture", "Interior design", "Masterplanning", "FF&E design", "Landscape", "3D visualization", "Creative direction", "Project delivery"] },
+      { id: "q_regions", type: "multi", label: "Where do you want to grow?", hint: "Your work already spans Qatar, the Maldives, Seychelles, Europe, the Caucasus and the Caribbean.", other: true,
+        options: ["Qatar", "Wider GCC", "Middle East", "Indian Ocean", "Europe", "UK", "Caucasus & Central Asia", "Caribbean & Americas", "Africa", "Asia"] },
+      { id: "q_sectors", type: "single", label: "Hospitality leads your current portfolio. Should the new brand lead with it too?", hint: "For example, Waldorf Astoria, Rosewood and LXR projects.",
+        options: ["Lead with hospitality", "Hospitality first, others visible", "Balanced across sectors", "To discuss"] },
+      { id: "q_studios", type: "single", label: "How should the Doha and London studios be presented?",
+        options: ["One global practice", "Two studios, one brand", "Doha as headquarters", "To discuss"] },
+      { id: "q_group", type: "single", label: "How visible should the connection to your parent holding group be?",
+        options: ["Prominent", "Mentioned", "Not mentioned", "To discuss"] },
+      { id: "q_founder", type: "single", label: "How prominent should Sumaia Hamcho, as founder, be in the new brand?",
+        options: ["Front and center", "Present on About", "Behind the scenes", "To discuss"] },
+      { id: "q_vision", type: "textarea", label: "Where do you see the practice in 5–10 years?" },
+      { id: "q_mission", type: "textarea", label: "What is the practice's mission? Why does it exist?" },
+      { id: "q_values", type: "textarea", label: "What values guide how you design and work with clients?" }
+    ]},
+    { title: "Clients and confidentiality", qs: [
+      { id: "q_clients", type: "multi", label: "Who are the clients you want to attract?", hint: "Select all that apply.", other: true,
+        options: ["Global hotel operators", "Royal & private clients", "Government", "Developers", "Luxury residential", "Cultural institutions", "Corporate headquarters", "Luxury retail"] },
+      { id: "q_found", type: "multi", label: "How do new clients find you today?", other: true,
+        options: ["Personal referrals", "Group network", "Repeat clients", "Competitions", "Press", "Events", "Social media"] },
+      { id: "q_confidential", type: "single", label: "Much of your work is for high-profile clients. How much of it can be shown publicly?",
+        options: ["Most of it", "Some, with approval", "Very little", "Not sure"] },
+      { id: "q_operators", type: "single", label: "Can operator brand names like Waldorf Astoria, Rosewood or W appear on the website and in materials?",
+        options: ["Yes", "With approval", "No", "Not sure"] },
+      { id: "q_confidential_how", type: "multi", label: "How could confidential work still be represented?", hint: "Select any that would be acceptable.", other: true,
+        options: ["Anonymized project names", "Location and type only", "Selected images only", "Drawings without photos", "Numbers & scale only", "Not at all"] },
+      { id: "q_feel", type: "textarea", label: "What should a prospective client feel after their first encounter with the new brand?" }
+    ]},
+    { title: "Brand strategy and positioning", qs: [
+      { id: "q_why_now", type: "textarea", label: "You describe this as a new chapter. What is changing, and why now?" },
+      { id: "q_gap", type: "textarea", label: "Where does your current brand fall short of the scale and caliber of your work?" },
+      { id: "q_position", type: "textarea", label: "How do you want the practice to be seen on the global stage, in a sentence or two?" },
+      { id: "q_peers", type: "pair", n: 4, label: "Which practices do you compete with, or want to be mentioned alongside?", hint: "Name and website. Local or international." },
+      { id: "q_different", type: "textarea", label: "What sets you apart from them?" },
+      { id: "q_words", type: "multi", limit: 5, label: "How should people describe the new brand?", hint: "Choose up to five.", other: true,
+        options: ["Visionary", "Refined", "Discreet", "Bold", "Timeless", "Precise", "Global", "Crafted", "Confident", "Understated", "Sculptural", "Enduring", "Elegant", "Warm", "Exclusive"] },
+      { id: "q_approvers", type: "textarea", label: "Who will review and approve the strategy, name and identity?", hint: "Names and roles. On a tight timeline, knowing this early helps a lot." }
+    ]},
+    { title: "Naming", note: "You'd like a fresh, simple and memorable name that moves away from H'Collective and doesn't rely on Arabic or Middle Eastern cultural motifs.", qs: [
+      { id: "q_name_convey", type: "textarea", label: "What should the new name convey or make people feel?" },
+      { id: "q_name_style", type: "multi", label: "Which kinds of names appeal to you?", hint: "Select any.", other: true,
+        options: ["Invented word", "Real word", "Founder's name", "Initials or letters", "Abstract", "Short, one or two syllables", "Descriptive"] },
+      { id: "q_name_link", type: "single", label: "Should the new name keep any link to H'Collective?",
+        options: ["Clean break", "A subtle link", "Open to both"] },
+      { id: "q_name_admire", type: "list", n: 3, label: "Which brand names do you admire, from any industry?", placeholder: "Name and why" },
+      { id: "q_name_avoid", type: "textarea", label: "Are there words, sounds or names you want to avoid?" },
+      { id: "q_name_languages", type: "multi", label: "In which languages must the name sound right and carry no unwanted meaning?", other: true,
+        options: ["English", "Arabic", "French", "German", "Italian", "Spanish", "Mandarin"] },
+      { id: "q_descriptor", type: "single", label: "Should the name stand alone or come with a descriptor?", hint: "For example, \"Architects\" or \"Studio\".",
+        options: ["Stand alone", "With a descriptor", "Open to both"] },
+      { id: "q_trademark", type: "multi", label: "Where must the name be cleared and registered as a trademark?", other: true,
+        options: ["Qatar", "GCC", "UK", "European Union", "United States", "International (WIPO)"] },
+      { id: "q_legal", type: "single", label: "Who will handle the trademark registration?",
+        options: ["In-house legal team", "Our external law firm", "We need a recommendation"] },
+      { id: "q_domain", type: "single", label: "How important is a matching .com domain?",
+        options: ["Essential", "Preferred", "Flexible"] },
+      { id: "q_transition", type: "single", label: "How should the change from H'Collective be communicated?",
+        options: ["Announced openly", "\"Formerly H'Collective\" for a while", "Quiet switch", "To discuss"] }
+    ]},
+    { title: "Visual identity", qs: [
+      { id: "q_look", type: "multi", label: "Which words fit the look and feel you want?", hint: "Choose any.",
+        options: ["Minimal", "Monumental", "Refined", "Bold", "Warm", "Cinematic", "Editorial", "Architectural", "Luxurious", "Understated", "Experimental", "Timeless"] },
+      { id: "q_motion", type: "single", label: "How important is motion in the identity?", hint: "You mentioned visual systems that come alive in motion.",
+        options: ["Central to the brand", "Important", "Nice to have"] },
+      { id: "q_admire", type: "textarea", label: "Which brand identities do you admire, from any industry, and why?", hint: "Links to a moodboard or Pinterest board are welcome." },
+      { id: "q_arabic", type: "single", label: "Will the identity need an Arabic version, for example on signage or documents?",
+        options: ["Yes, fully bilingual", "For some uses", "English only", "Not sure yet"] },
+      { id: "q_book", type: "multi", label: "What should the brand book cover?", hint: "Select all that apply.", other: true,
+        options: ["Logo & usage", "Typography", "Color", "Graphic language", "Motion principles", "Photography direction", "Tone of voice", "Templates", "Signage & spaces", "Stationery"] },
+      { id: "q_visual_avoid", type: "textarea", label: "Is there anything visual you want to avoid?", hint: "Colors, styles or clichés from architecture branding." }
+    ]},
+    { title: "Website", qs: [
+      { id: "q_current_site", type: "textarea", label: "What works on your current website, and what doesn't?" },
+      { id: "q_goals", type: "multi", limit: 3, label: "What should the new website achieve?", hint: "Choose up to three.", other: true,
+        options: ["Global recognition", "Win high-profile clients", "Show scale & caliber", "Tell the founder's story", "Support pitches", "Press & awards", "Attract talent", "Partner credibility"] },
+      { id: "q_actions", type: "multi", label: "What should visitors do on the site?", hint: "Select all that apply.", other: true,
+        options: ["Send a project inquiry", "Book a meeting", "Browse projects", "Download a practice profile", "Contact for press", "Apply for a job", "Follow on social"] },
+      { id: "q_pages", type: "multi", label: "Which pages do you have in mind?", hint: "Select all that apply.", other: true,
+        options: ["Home", "Projects", "Project pages", "Practice / About", "Services", "Studios", "Founder & leadership", "News & press", "Awards", "Careers", "Contact"] },
+      { id: "q_home", type: "matrix", label: "How important is each homepage section?", hint: "Rate the ones you have an opinion on.",
+        rows: ["Opening film", "Brand statement", "Featured projects", "Practice in numbers", "Services", "Founder & leadership", "Studios", "Clients & partners", "Awards & press", "Contact"] },
+      { id: "q_categories", type: "single", label: "Your site groups projects as Hospitality, Residential, Buildings and Master Planning. Should the new site keep these categories?",
+        options: ["Keep them", "Refine them", "Rethink them", "To discuss"] },
+      { id: "q_count", type: "single", label: "Your site shows around 30 projects. How many should the new site launch with?",
+        options: ["A curated 10–15", "15–25", "All of them", "Not sure"] },
+      { id: "q_team", type: "single", label: "How should the team be presented?", hint: "Your current Team page lists 14 people by name and role.",
+        options: ["Leadership only", "Full team with roles", "Full team with photos", "Not on the site"] },
+      { id: "q_project_page", type: "multi", label: "What should each project page include?", other: true,
+        options: ["Photography", "Renders", "Drawings", "Film", "Project story", "Location, year & scale", "Services provided", "Awards"] },
+      { id: "q_features", type: "multi", label: "Which features do you need?", hint: "Select all that apply.", other: true,
+        options: ["Filterable project archive", "Full-screen film", "Refined motion & interactions", "Arabic version", "Project inquiry form", "Downloadable profile", "Press kit", "Careers listings", "Newsletter"] },
+      { id: "q_sites", type: "list", n: 3, label: "Which three websites do you admire, and why?", hint: "They don't need to be architecture sites.", placeholder: "Link and a few words on why" },
+      { id: "q_updates", type: "single", label: "Who will update the website after launch?",
+        options: ["Our team", "Holographik", "A mix of both", "Not sure yet"] },
+      { id: "q_platform", type: "single", label: "Do you have a platform preference?", other: true,
+        options: ["Webflow", "Framer", "WordPress", "No preference"] },
+      { id: "q_hosting", type: "single", label: "Who will handle hosting and maintenance after launch?",
+        options: ["Our IT team", "A partner", "We'd like Holographik to", "Not sure yet"] }
+    ]},
+    { title: "Social media and templates", qs: [
+      { id: "q_channels", type: "multi", label: "Which social channels will you use?", hint: "You're on Instagram and LinkedIn today.", other: true,
+        options: ["Instagram", "LinkedIn", "Pinterest", "YouTube", "TikTok", "X"] },
+      { id: "q_social_assets", type: "multi", label: "Which social media assets do you need?", hint: "Select all that apply.", other: true,
+        options: ["Launch campaign", "Post templates", "Story templates", "Project carousels", "Motion & reels", "Profile & cover images"] },
+      { id: "q_social_who", type: "single", label: "Who will run your social media after launch?",
+        options: ["Our team", "An agency", "Holographik", "Not decided"] },
+      { id: "q_decks", type: "multi", label: "Which presentation templates do you need?", other: true,
+        options: ["Client pitch", "Project presentation", "Practice profile", "Competition entry", "Internal"] },
+      { id: "q_deck_format", type: "single", label: "Which presentation software does your team use?",
+        options: ["PowerPoint", "Keynote", "Google Slides", "Several"] }
+    ]},
+    { title: "Content and assets", qs: [
+      { id: "q_have", type: "multi", label: "What do you already have?", hint: "Select all that apply.",
+        options: ["Project photography", "Renders", "Drawings", "Project films", "Project descriptions", "Founder biography", "Team photos", "Awards & press", "Client testimonials", "None yet"] },
+      { id: "q_copy", type: "single", label: "Who will write the website and brand copy?",
+        options: ["Our team", "We have drafts to refine", "We'd like help with copywriting"] },
+      { id: "q_shoot", type: "single", label: "Will you need new photography or film?", hint: "For example, the founder, the team or the studios.",
+        options: ["Yes", "Maybe", "No, we have enough"] },
+      { id: "q_languages", type: "single", label: "Which languages will the website be in?", other: true, otherLabel: "Other languages",
+        options: ["English only", "English and Arabic"] }
+    ]},
+    { title: "Timeline and process", note: "Your plan is to complete strategy, naming and identity by the end of November, with the website and remaining visuals in December.", qs: [
+      { id: "q_launch", type: "textarea", label: "Is there a launch moment or event the new brand must be ready for?" },
+      { id: "q_dates", type: "single", label: "Are these dates fixed?",
+        options: ["Fixed", "Some flexibility", "Not sure yet"] },
+      { id: "q_feedback", type: "single", label: "How quickly can your team usually give feedback?",
+        options: ["Within a day", "2–3 days", "About a week"] },
+      { id: "q_contact", type: "text", label: "Who will be our day-to-day contact?", placeholder: "Name, role and email" }
+    ]},
+    { title: "Final notes", qs: [
+      { id: "q_else", type: "textarea", label: "Is there anything else we should know before we start?" }
+    ]}
+  ];
+
+  const RATINGS = ["Essential", "Important", "Nice to have"];
+  const form = document.getElementById("qform");
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const key = s => s.replace(/[^a-z0-9]+/gi, "_");
+
+  // ---- Render ----
+  let qn = 0;
+  PARTS.forEach((part, pi) => {
+    const sec = document.createElement("section");
+    sec.className = "part";
+    let html = `<div class="part-head"><h2>${esc(part.title)}</h2></div>`;
+    if (part.note) html += `<p class="part-note">${esc(part.note)}</p>`;
+    part.qs.forEach(q => {
+      qn++; q.n_ = qn;
+      const lid = "l_" + q.id;
+      html += `<div class="q" data-q="${q.id}" role="group" aria-labelledby="${lid}"><span class="q-num">${qn}</span><div class="q-body">`;
+      html += `<label class="q-label" id="${lid}" ${["text", "textarea"].includes(q.type) ? `for="${q.id}"` : ""}>${esc(q.label)}</label>`;
+      if (q.hint) html += `<p class="q-hint">${esc(q.hint)}</p>`;
+      const ph = q.placeholder ? ` placeholder="${esc(q.placeholder)}"` : "";
+      if (q.type === "text") html += `<input type="text" id="${q.id}" name="${q.id}"${ph}>`;
+      if (q.type === "textarea") html += `<textarea id="${q.id}" name="${q.id}"${ph}></textarea>`;
+      if (q.type === "multi" || q.type === "single") {
+        const t = q.type === "multi" ? "checkbox" : "radio";
+        html += `<div class="chips" ${q.limit ? `data-limit="${q.limit}"` : ""}>` +
+          q.options.map(o => `<label class="chip"><input type="${t}" name="${q.id}" value="${esc(o)}"><span>${esc(o)}</span></label>`).join("") + `</div>`;
+        if (q.limit) html += `<div class="limit-note" aria-live="polite"></div>`;
+        if (q.other) html += `<input class="other" type="text" name="${q.id}_other" placeholder="${esc(q.otherLabel || "Other")}" aria-label="${esc(q.label)}: ${esc(q.otherLabel || "other")}">`;
+      }
+      if (q.type === "list") {
+        html += `<div class="stack">` + Array.from({ length: q.n }, (_, i) =>
+          `<div class="numbered"><span>${i + 1}</span><input type="text" name="${q.id}_${i + 1}"${ph} aria-label="${esc(q.label)} ${i + 1}"></div>`).join("") + `</div>`;
+      }
+      if (q.type === "pair") {
+        html += `<div class="stack">` + Array.from({ length: q.n }, (_, i) =>
+          `<div class="pair"><input type="text" name="${q.id}_name_${i + 1}" placeholder="Competitor ${i + 1}" aria-label="Competitor ${i + 1} name"><input type="text" name="${q.id}_link_${i + 1}" placeholder="Website" aria-label="Competitor ${i + 1} website"></div>`).join("") + `</div>`;
+      }
+      if (q.type === "matrix") {
+        html += `<div class="matrix">` + q.rows.map(r => {
+          const n = `${q.id}_${key(r)}`;
+          return `<div class="m-row" role="radiogroup" aria-label="${esc(r)}"><span class="m-label">${esc(r)}</span><div class="chips">` +
+            RATINGS.map(v => `<label class="chip"><input type="radio" name="${n}" value="${v}"><span>${v}</span></label>`).join("") + `</div></div>`;
+        }).join("") + `</div>`;
+      }
+      html += `</div></div>`;
+    });
+    sec.innerHTML = html;
+    form.appendChild(sec);
+  });
+
+  // Choice limits; a second click on a selected radio clears it
+  form.addEventListener("change", e => {
+    const inp = e.target;
+    if (inp.type !== "checkbox") return;
+    const group = inp.closest("[data-limit]");
+    if (!group) return;
+    const limit = +group.dataset.limit;
+    const note = group.nextElementSibling;
+    if (inp.checked && group.querySelectorAll("input:checked").length > limit) {
+      inp.checked = false;
+      if (note) note.textContent = `You can choose up to ${limit}. Unselect one to pick another.`;
+    } else if (note) note.textContent = "";
+  });
+  form.addEventListener("click", e => {
+    const inp = e.target.closest(".chip")?.querySelector("input[type=radio]");
+    if (!inp || e.target.tagName !== "SPAN") return;
+    if (inp.checked) { e.preventDefault(); inp.checked = false; inp.dispatchEvent(new Event("input", { bubbles: true })); }
+  });
+
+  // ---- Values ----
+  const val = n => (form.elements[n]?.value || "").trim();
+  const checked = n => [...form.querySelectorAll(`input[name="${n}"]:checked`)].map(e => e.value);
+
+  function answerFor(q) {
+    if (q.type === "text" || q.type === "textarea") return val(q.id);
+    if (q.type === "multi" || q.type === "single") {
+      const arr = checked(q.id); const o = val(q.id + "_other"); if (o) arr.push(o); return arr.join(", ");
+    }
+    if (q.type === "list") return Array.from({ length: q.n }, (_, i) => val(`${q.id}_${i + 1}`)).filter(Boolean).join("\n");
+    if (q.type === "pair") return Array.from({ length: q.n }, (_, i) => {
+      const a = val(`${q.id}_name_${i + 1}`), b = val(`${q.id}_link_${i + 1}`); return [a, b].filter(Boolean).join(" — ");
+    }).filter(Boolean).join("\n");
+    if (q.type === "matrix") return q.rows.map(r => { const v = checked(`${q.id}_${key(r)}`)[0]; return v ? `${r}: ${v}` : null; }).filter(Boolean).join("\n");
+    return "";
+  }
+  const allQs = PARTS.flatMap(p => p.qs);
+
+  function buildColumns(submittedAt) {
+    return [
+      ["Submitted", submittedAt], ["Name", val("c_name")], ["Role", val("c_role")],
+      ["Email", val("c_email")], ["Phone", val("c_phone")],
+      ...allQs.map(q => [`${q.n_}. ${q.label}`, answerFor(q)])
+    ].map(([h, v]) => ({ h, v }));
+  }
+  function asText() {
+    let out = `H’Collective — Brand & website questionnaire\nFilled out by: ${val("c_name")}${val("c_role") ? ", " + val("c_role") : ""}\n${val("c_email")}  ${val("c_phone")}\n`;
+    PARTS.forEach((p, i) => {
+      out += `\n\n${i + 1}. ${p.title.toUpperCase()}\n`;
+      p.qs.forEach(q => { out += `\n${q.n_}. ${q.label}\n${answerFor(q) || "—"}\n`; });
+    });
+    return out;
+  }
+
+  // ---- Progress ----
+  function updateProgress() {
+    const done = allQs.filter(q => answerFor(q)).length;
+    document.getElementById("progressFill").style.width = Math.round(done / allQs.length * 100) + "%";
+    return done;
+  }
+
+  // ---- Autosave (browser storage) ----
+  function snapshot() {
+    const data = {};
+    for (const [k, v] of new FormData(form).entries()) {
+      if (k in data) { if (!Array.isArray(data[k])) data[k] = [data[k]]; data[k].push(v); } else data[k] = v;
+    }
+    return data;
+  }
+  let savedTimer;
+  function save() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot())); } catch (e) { return; }
+    const note = document.getElementById("savedNote");
+    if (!note) return;
+    note.textContent = "Saved";
+    clearTimeout(savedTimer);
+    savedTimer = setTimeout(() => { note.textContent = "Answers save in this browser."; }, 1200);
+  }
+  function load() {
+    let data = null;
+    try { data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null"); } catch (e) { data = null; }
+    if (data) Object.entries(data).forEach(([k, v]) => {
+      const vals = Array.isArray(v) ? v : [v];
+      document.querySelectorAll(`[name="${CSS.escape(k)}"]`).forEach(el => {
+        if (el.type === "checkbox" || el.type === "radio") el.checked = vals.includes(el.value);
+        else el.value = vals[0];
+      });
+    });
+    updateProgress();
+  }
+  form.addEventListener("input", () => { save(); updateProgress(); });
+  form.addEventListener("change", () => { save(); updateProgress(); });
+
+  // ---- Sending ----
+  const status = document.getElementById("status");
+  const setStatus = (msg, err) => { status.textContent = msg; status.classList.toggle("error", !!err); };
+  const downloadsP = (window.claude && typeof window.claude.use === "function")
+    ? window.claude.use("downloads").catch(() => null) : Promise.resolve(null);
+
+  function showFallback() {
+    const fb = document.getElementById("fallback");
+    const body = asText();
+    const mail = document.getElementById("mailLink");
+    const subject = encodeURIComponent("Brand & website questionnaire — H’Collective");
+    mail.href = body.length < 1800
+      ? `mailto:hello@holographik.co?subject=${subject}&body=${encodeURIComponent(body)}`
+      : `mailto:hello@holographik.co?subject=${subject}&body=${encodeURIComponent("Our answers are pasted below.\n\n")}`;
+    fb.classList.add("show");
+  }
+
+  document.getElementById("sendBtn").addEventListener("click", async () => {
+    if (!val("c_name") || !val("c_email")) {
+      setStatus("Add your name and email above so we know who to reply to.", true);
+      form.elements["c_name"].focus(); return;
+    }
+    if (updateProgress() === 0) { setStatus("The questionnaire is still empty. Answer a few questions first.", true); return; }
+    const btn = document.getElementById("sendBtn");
+    if (SHEET_WEBHOOK_URL) {
+      btn.disabled = true; setStatus("Sending…");
+      try {
+        const submittedAt = new Date().toISOString();
+        await fetch(SHEET_WEBHOOK_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ columns: buildColumns(submittedAt), submittedAt }) });
+        setStatus("Sent. Thank you, we've received your answers and will be in touch.");
+        btn.textContent = "Sent";
+        return;
+      } catch (e) {
+        btn.disabled = false;
+      }
+    }
+    setStatus("");
+    showFallback();
+  });
+
+  document.getElementById("copyBtn").addEventListener("click", async () => {
+    const text = asText();
+    try { await navigator.clipboard.writeText(text); setStatus("Answers copied. Paste them into an email to hello@holographik.co."); }
+    catch (e) {
+      const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select();
+      let ok = false; try { ok = document.execCommand("copy"); } catch (e2) { ok = false; }
+      ta.remove();
+      setStatus(ok ? "Answers copied. Paste them into an email to hello@holographik.co." : "Copying isn't allowed here. Use Download a copy instead.", !ok);
+    }
+  });
+
+  document.getElementById("downloadBtn").addEventListener("click", async () => {
+    const text = asText();
+    const filename = "Brand-and-website-questionnaire.txt";
+    const downloads = await downloadsP;
+    if (downloads) {
+      try { await downloads.save({ filename, data: text }); setStatus("Copy saved."); }
+      catch (e) { if (e && e.code !== "declined") setStatus("The download didn't go through. Try Copy answers instead.", true); }
+      return;
+    }
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([text], { type: "text/plain" }));
+    a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  });
+
+  document.getElementById("clearBtn").addEventListener("click", () => {
+    if (!confirm("Clear all answers? This can't be undone.")) return;
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+    form.reset(); updateProgress(); setStatus("All answers cleared.");
+  });
+
+  load();
+</script>
+</body>
+</html>
